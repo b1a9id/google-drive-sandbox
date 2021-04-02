@@ -20,6 +20,7 @@ repositories {
 
 ext {
 	set('googleApiServicesDriveVersion', "v3-rev20210315-1.31.0")
+	set('googleAuthLibraryOAuth2HttpVersion', "0.25.2")
 }
 
 dependencies {
@@ -28,6 +29,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	implementation "com.google.apis:google-api-services-drive:$googleApiServicesDriveVersion"
+	implementation "com.google.auth:google-auth-library-oauth2-http:$googleAuthLibraryOAuth2HttpVersion"
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
