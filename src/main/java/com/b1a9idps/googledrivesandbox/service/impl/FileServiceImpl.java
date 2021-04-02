@@ -71,4 +71,15 @@ public class FileServiceImpl implements FileService {
 
         LOG.info("Uploaded: file id: {}\n", file.getId());
     }
+
+    @Override
+    public void download(GoogleCredentials credentials) throws IOException, GeneralSecurityException {
+        HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
+        Drive service = new Drive.Builder(GoogleNetHttpTransport.newTrustedTransport(), JSON_FACTORY, requestInitializer)
+                .setApplicationName("Google Drive Sandbox")
+                .build();
+
+        File file = service.files().get(gDriveProperties.getDownloadFileId()).execute();
+        LOG.info("Downloaded: file id: {}, file name: {}", file.getId(), file.getName());
+    }
 }

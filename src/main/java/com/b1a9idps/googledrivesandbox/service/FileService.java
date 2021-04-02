@@ -9,4 +9,6 @@ public interface FileService {
     void list(GoogleCredentials credentials) throws IOException, GeneralSecurityException;
 
     void upload(GoogleCredentials credentials) throws IOException, GeneralSecurityException;
+
+    void download(GoogleCredentials credentials) throws IOException, GeneralSecurityException;
 }

@@ -32,7 +32,6 @@ public class Runner implements CommandLineRunner {
         credentials.refreshIfExpired();
 
         fileService.list(credentials);
-        fileService.upload(credentials);
-        fileService.list(credentials);
+        fileService.download(credentials);
     }
 }

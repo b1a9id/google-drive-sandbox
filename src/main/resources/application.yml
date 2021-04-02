@@ -1,2 +1,3 @@
 gdrive:
   parent-dir-id: ${PARENT_DIR_ID}
+  download-file-id: ${DONW_LOAD_FILE_ID}
