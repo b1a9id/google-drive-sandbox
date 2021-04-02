@@ -2,15 +2,19 @@ package com.b1a9idps.googledrivesandbox.service.impl;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import com.b1a9idps.googledrivesandbox.properties.GDriveProperties;
 import com.b1a9idps.googledrivesandbox.service.FileService;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.FileContent;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -26,6 +30,12 @@ public class FileServiceImpl implements FileService {
     private static final Logger LOG = LoggerFactory.getLogger(FileServiceImpl.class);
 
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+
+    private final GDriveProperties gDriveProperties;
+
+    public FileServiceImpl(GDriveProperties gDriveProperties) {
+        this.gDriveProperties = gDriveProperties;
+    }
 
     @Override
     public void list(GoogleCredentials credentials) throws IOException, GeneralSecurityException {
@@ -45,7 +55,20 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void upload(GoogleCredentials credentials) {
+    public void upload(GoogleCredentials credentials) throws IOException, GeneralSecurityException {
+        HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
+        Drive service = new Drive.Builder(GoogleNetHttpTransport.newTrustedTransport(), JSON_FACTORY, requestInitializer)
+                .setApplicationName("Google Drive Sandbox")
+                .build();
 
+        File fileMetadata = new File();
+        fileMetadata.setName("create.txt");
+        fileMetadata.setParents(Collections.singletonList(gDriveProperties.getParentDirId()));
+        FileContent mediaContent = new FileContent("text/plain", new ClassPathResource("/static/create.txt").getFile());
+        File file = service.files().create(fileMetadata, mediaContent)
+                .setFields("id, parents")
+                .execute();
+
+        LOG.info("Uploaded: file id: {}\n", file.getId());
     }
 }

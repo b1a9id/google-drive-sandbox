@@ -1,7 +1,6 @@
 package com.b1a9idps.googledrivesandbox.runner;
 
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
@@ -15,7 +14,7 @@ import com.google.auth.oauth2.ServiceAccountCredentials;
 
 @Component
 public class Runner implements CommandLineRunner {
-    private static final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE_METADATA_READONLY);
+    private static final List<String> SCOPES = List.of(DriveScopes.DRIVE_FILE);
     private static final String CREDENTIALS_FILE_PATH = "/static/credentials.json";
 
     private final FileService fileService;
@@ -32,6 +31,8 @@ public class Runner implements CommandLineRunner {
         }
         credentials.refreshIfExpired();
 
+        fileService.list(credentials);
+        fileService.upload(credentials);
         fileService.list(credentials);
     }
 }

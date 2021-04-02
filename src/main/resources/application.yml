@@ -1,1 +1,2 @@
-
+gdrive:
+  parent-dir-id: ${PARENT_DIR_ID}

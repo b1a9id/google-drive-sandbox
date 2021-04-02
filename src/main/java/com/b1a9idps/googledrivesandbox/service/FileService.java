@@ -8,5 +8,5 @@ import com.google.auth.oauth2.GoogleCredentials;
 public interface FileService {
     void list(GoogleCredentials credentials) throws IOException, GeneralSecurityException;
 
-    void upload(GoogleCredentials credentials);
+    void upload(GoogleCredentials credentials) throws IOException, GeneralSecurityException;
 }
